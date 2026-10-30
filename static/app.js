@@ -118,12 +118,12 @@ async function loadLedger(){
 async function refresh(){
  try{await refreshStats();const records=await api("/api/transactions");$("recentList").innerHTML=records.length?records.slice(0,4).map(x=>{const t=x.transaction,inc=t.receiver===currentUser.upi;return `<div class="record"><div><strong>${inc?"Received from":"Sent to"} ${safe(inc?t.sender:t.receiver)}</strong><small>${safe(t.transaction_id)} · Block #${x.index}</small></div><div></div><div class="amount ${inc?"positive":"negative"}">${inc?"+":"−"}${money(t.amount)}</div></div>`}).join(""):'<div class="empty">No transactions yet. Make a demo payment to create your first block.</div>';
  if(!$("historyView").hidden)loadHistory();if(!$("ledgerView").hidden)loadLedger();
- }catch(e){console.error(e)}
+ }catch(e){if(/sign in|401/i.test(e.message)){currentUser=null;await boot();return}console.error(e)}
 }
 async function boot(){
  const csrf=await api("/api/csrf");csrfToken=csrf.token;
  const s=await api("/api/session");
- if(!s.logged_in){$("loginView").hidden=false;$("appView").hidden=true;return;}
+ if(!s.logged_in){currentUser=null;$("loginView").hidden=false;$("appView").hidden=true;$("logoutBtn").hidden=true;return;}
  currentUser=s;$("loginView").hidden=true;$("appView").hidden=false;$("logoutBtn").hidden=false;
  $("userName").textContent=s.name;$("avatar").textContent=s.name[0];
  const users=await api("/api/users");$("receiver").innerHTML=users.map(u=>`<option value="${safe(u.username)}">${safe(u.name)} — ${safe(u.upi)}</option>`).join("");
