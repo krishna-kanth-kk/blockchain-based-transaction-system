@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+upi_blockchain.db
+upi_blockchain.db-shm
+upi_blockchain.db-wal
+keys/*_private.pem
+keys/*_public.pem
+.pytest_cache/
+.DS_Store

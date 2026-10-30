@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BlockPay — Business Payments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">◈</div><div><b>BLOCKPAY</b><small>BUSINESS PAYMENTS</small></div></div>
+    <div class="side-label">OPERATIONS</div>
+    <button class="nav active" data-view="overview">▦ <span>Dashboard</span></button>
+    <button class="nav" data-view="pay">↗ <span>Send money</span></button>
+    <button class="nav" data-view="collect">＋ <span>Collect money</span></button>
+    <button class="nav" data-view="invoices">▣ <span>Invoices</span></button>
+    <button class="nav" data-view="customers">♙ <span>Customers</span></button>
+    <button class="nav" data-view="history">◷ <span>Activity</span></button>
+    <button class="nav" data-view="ledger">▤ <span>Audit trail</span></button>
+    <div class="side-bottom"><small>BUSINESS ACCOUNT</small></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><span class="eyebrow">BUSINESS PAYMENTS</span><h1 id="pageTitle">Dashboard</h1></div>
+      <div class="top-right"><button class="avatar" id="avatar" title="Account settings">?</button><button class="text-btn" id="logoutBtn" hidden>Sign out</button><button class="outline theme-toggle" id="themeToggle" type="button">Night mode</button></div>
+    </header>
+    <section id="loginView" class="login-wrap">
+      <div class="login-card"><span class="eyebrow">BUSINESS ACCOUNT</span><h2>Move money.<br><em>Run your collections.</em></h2>
+      <p>Send payments, issue invoices, track customers and keep a verifiable settlement record.</p>
+      <label>DEMO USER</label><select id="username"><option value="alice">Alice — alice@demo</option><option value="bob">Bob — bob@demo</option><option value="charlie">Charlie — charlie@demo</option></select>
+      <label>ACCOUNT PIN</label><input id="pin" type="password" maxlength="4" value="1234" inputmode="numeric">
+      <button class="primary full" id="loginBtn">Open workspace <span>→</span></button><div class="hint">Test access PIN: <b>1234</b></div><div class="error" id="loginError"></div></div>
+      <div class="login-art"><div class="orbit o1"></div><div class="orbit o2"></div><div class="core">◈</div><div class="art-caption">A SHARED, VERIFIABLE<br>TRANSACTION HISTORY</div></div>
+    </section>
+    <section id="appView" hidden>
+      <div class="welcome-row"><div><span class="eyebrow">BUSINESS OVERVIEW</span><h2>Good to see you, <span id="userName">Alice</span>.</h2><p>Monitor cash movement, collections and settlement records from one workspace.</p></div><button class="primary" id="quickPay">＋ Send money</button></div>
+      <div class="stats">
+        <article class="stat-card"><span>AVAILABLE DEMO BALANCE</span><strong id="balance">₹5,000.00</strong><small>Local sandbox funds</small></article>
+        <article class="stat-card"><span>BLOCKS IN LEDGER</span><strong id="blockCount">0</strong><small>One payment per block</small></article>
+        <article class="stat-card"><span>TOTAL PAYMENT VOLUME</span><strong id="volume">₹0.00</strong><small>Across the local network</small></article>
+        <article class="stat-card"><span>OUTSTANDING INVOICES</span><strong id="outstanding">₹0.00</strong><small id="invoiceCount">0 open requests</small></article>
+        <article class="stat-card"><span>LEDGER INTEGRITY</span><strong class="verified" id="integrity">Verified</strong><small id="integritySub">Hash + signature checks</small></article>
+      </div>
+      <article class="panel wallet-panel"><div><span class="eyebrow">NON-CUSTODIAL WALLET</span><h3>Connect your wallet</h3><p class="muted">Use MetaMask for a signed connection, or try the built-in demo wallet.</p><div id="walletState" class="wallet-state">No wallet connected</div></div><div class="wallet-actions"><button class="primary" id="connectWalletBtn">Connect demo wallet</button><button class="outline" id="disconnectWalletBtn" hidden>Disconnect</button></div></article>
+      <div class="content-grid">
+        <article class="panel"><div class="panel-head"><div><span class="eyebrow">RECENT ACTIVITY</span><h3>Transactions</h3></div><button class="text-btn" data-goto="history">View all →</button></div><div id="recentList" class="empty">No transactions yet. Make a demo payment to create your first block.</div></article>
+        <article class="panel security-panel"><span class="eyebrow">SECURITY STATUS</span><h3>Proof, not promises.</h3><div class="security-item"><b class="check">✓</b><div><strong>SHA-256 linked blocks</strong><small>Each block commits to its predecessor.</small></div></div><div class="security-item"><b class="check">✓</b><div><strong>ECDSA transaction signature</strong><small>Sender key signs the block hash.</small></div></div><div class="security-item"><b class="check">✓</b><div><strong>Validator quorum</strong><small>Local 3-node Proof of Authority simulation.</small></div></div><button class="outline full" id="verifyBtn">↻ Verify entire ledger</button><div id="verifyMessage" class="verify-msg"></div></article>
+      </div>
+    </section>
+    <section id="payView" hidden><div class="form-layout"><article class="panel payment-form"><span class="eyebrow">TRANSFER / LOCAL DEMO</span><h2>Send a payment</h2><p class="muted">This simulates a UPI transfer. No real money or bank rails are involved.</p><label>PAY TO</label><select id="receiver"></select><label>AMOUNT (INR)</label><div class="amount-input"><span>₹</span><input id="amount" type="number" min="1" max="100000" step="0.01" placeholder="0.00"></div><label>NOTE (OPTIONAL)</label><input id="note" maxlength="80" placeholder="What's this payment for?"><div class="secure-note">◈ Signed with your ECDSA private key · SHA-256 block hash</div><button class="primary full" id="sendBtn">Review & send payment →</button><div id="payMessage" class="error"></div></article><article class="panel flow-panel"><span class="eyebrow">WHAT HAPPENS NEXT</span><h3>Transaction lifecycle</h3><div class="flow-step"><b>01</b><div><strong>Create transaction</strong><small>Sender, receiver, amount and timestamp.</small></div></div><div class="flow-step"><b>02</b><div><strong>Sign transaction</strong><small>ECDSA signature using sender's private key.</small></div></div><div class="flow-step"><b>03</b><div><strong>Validate & append</strong><small>Hash link and simulated validator quorum.</small></div></div><div class="flow-step"><b>04</b><div><strong>Update demo balances</strong><small>Both account balances are updated locally.</small></div></div></article></div></section>
+    <section id="collectView" hidden><div class="form-layout"><article class="panel payment-form"><span class="eyebrow">RECEIVABLES</span><h2>Create an invoice</h2><p class="muted">Send a trackable payment request to a customer.</p><label>CUSTOMER</label><select id="invoiceCustomer"></select><label>AMOUNT (INR)</label><div class="amount-input"><span>₹</span><input id="invoiceAmount" type="number" min="0.01" step="0.01" placeholder="0.00"></div><label>DUE DATE</label><input id="invoiceDue" type="date"><label>DESCRIPTION</label><input id="invoiceDescription" maxlength="240" placeholder="Consulting, order or subscription"><button class="primary full" id="createInvoiceBtn">Create payment request →</button><div id="invoiceMessage" class="error"></div></article><article class="panel flow-panel"><span class="eyebrow">COLLECTION FLOW</span><h3>From request to settlement</h3><div class="flow-step"><b>01</b><div><strong>Issue request</strong><small>Customer, amount and due date are recorded.</small></div></div><div class="flow-step"><b>02</b><div><strong>Share payment link</strong><small>One link, with status and expiry tracking.</small></div></div><div class="flow-step"><b>03</b><div><strong>Reconcile payment</strong><small>Invoice status and audit events stay together.</small></div></div></article></div></section>
+    <section id="invoicesView" hidden><article class="panel"><div class="panel-head"><div><span class="eyebrow">RECEIVABLES</span><h3>Invoices and payment requests</h3></div><button class="primary" data-goto="collect">New invoice</button></div><div id="invoiceList" class="empty">Loading invoices…</div></article></section>
+    <section id="customersView" hidden><article class="panel"><div class="panel-head"><div><span class="eyebrow">CONTACTS</span><h3>Customers</h3></div><button class="primary" id="newCustomerBtn">Add customer</button></div><div id="customerForm" class="inline-form" hidden><input id="customerName" placeholder="Business or customer name"><input id="customerEmail" type="email" placeholder="Email"><input id="customerPhone" placeholder="Phone"><input id="customerUpi" placeholder="UPI ID (optional)"><button class="primary" id="saveCustomerBtn">Save</button></div><div id="customerList" class="empty">Loading customers…</div></article></section>
+    <section id="historyView" hidden><article class="panel"><div class="panel-head history-head"><div><span class="eyebrow">PAYMENT ACTIVITY</span><h3>Transactions</h3></div><div class="history-tools"><input id="historySearch" class="table-search" placeholder="Search ID, UPI or note"><select id="historyFilter" class="table-filter"><option value="all">All activity</option><option value="sent">Sent</option><option value="received">Received</option></select><button class="outline" id="exportBtn">Export CSV</button></div></div><div id="historyList" class="empty">Loading transactions…</div></article></section>
+    <section id="ledgerView" hidden><article class="panel"><div class="panel-head"><div><span class="eyebrow">APPEND-ONLY RECORD VIEW</span><h3>Blockchain ledger</h3></div><div class="history-tools"><button class="outline" id="ledgerVerify">Verify chain</button><span id="ledgerVerifyMessage" class="verify-msg"></span></div></div><div id="ledgerList" class="empty">Loading blocks…</div></article></section>
+    <section id="accountView" hidden><article class="panel account-page"><span class="eyebrow">ACCOUNT SETTINGS</span><h2>Your account</h2><p class="muted">Manage the local demo profile currently signed in.</p><div class="account-grid"><div><span>NAME</span><strong id="accountName">—</strong></div><div><span>USERNAME</span><strong id="accountUsername">—</strong></div><div><span>UPI ID</span><strong id="accountUpi">—</strong></div><div><span>BALANCE</span><strong id="accountBalance">—</strong></div></div><button class="outline" id="accountBack">Back to dashboard</button></article></section>
+    <footer>BLOCKPAY <span>BUSINESS PAYMENTS WORKSPACE</span></footer>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="/static/app.js"></script>
+</body></html>
